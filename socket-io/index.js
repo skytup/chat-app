@@ -1,7 +1,7 @@
 const http = require("http");
 
 const express = require("express")
-
+// const publicIp = require('public-ip');
 const path = require("path");
 const { Server } = require("socket.io");
 
@@ -14,8 +14,7 @@ io.on("connection", (client) => {
     console.log("New user connected " + client.id);
     client.on("message", (message) => {
         console.log(message);
-        let i = 0;
-        client.emit("response", "Tera yaar hoon main " + (message));
+        io.emit("response", `<h3>${message}</h3>`);
     });
 });
 

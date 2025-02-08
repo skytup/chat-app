@@ -9,6 +9,9 @@
 
 <body>
     Chatting
+    <div class="container" id="display">
+
+    </div>
     <input type="text" id="inputArea">
     <button id="sendBtn">Send</button>
     <script src="/socket.io/socket.io.js"></script>
@@ -22,8 +25,10 @@
             const message = input.value;
             socket.emit("message",message);
         });
+        const display = document.getElementById('display');
         socket.on("response",(e)=>{
             console.log(e);
+            display.innerHTML+=e+"<br>";
         })
     </script>
 </body>
