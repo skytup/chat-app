@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket Io</title>
 </head>
+
 <body>
     Chatting
+    <input type="text" id="inputArea">
+    <button id="sendBtn">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        const socket = io();
+        const input = document.getElementById("inputArea");
+        const sendBtn = document.getElementById("sendBtn");
+
+        sendBtn.addEventListener("click", (e) => {
+            const message = input.value;
+            socket.emit("message",message);
+        });
+        socket.on("response",(e)=>{
+            console.log(e);
+        })
+    </script>
 </body>
+
 </html>
