@@ -5,10 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket Io</title>
+    <style>
+        #live {
+            position: fixed;
+            width: 100px;
+            height: 50px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px gainsboro;
+            right: 10px;
+            top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: x-large;
+            cursor: progress;
+        }
+
+        #live:hover {
+            box-shadow: 0 0 10px gray;
+        }
+    </style>
 </head>
 
 <body>
     Chatting
+    <div id="live">0</div>
     <div class="container" id="display">
 
     </div>
@@ -23,13 +44,16 @@
 
         sendBtn.addEventListener("click", (e) => {
             const message = input.value;
-            socket.emit("message",message);
+            socket.emit("message", message);
         });
         const display = document.getElementById('display');
-        socket.on("response",(e)=>{
+        socket.on("response", (e) => {
             console.log(e);
-            display.innerHTML+=e+"<br>";
-        })
+            display.innerHTML += e + "<br>";
+        });
+        socket.on("online", (user) => {
+            document.getElementById("live").innerText = user;
+        });
     </script>
 </body>
 
