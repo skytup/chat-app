@@ -1,17 +1,13 @@
 {
-  "name": "chat-room",
+  "name": "chat-app",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node api/socket.js",
+    "dev": "node api/socket.js"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.7",
-    "express": "^4.21.2",
-    "socket.io": "^4.8.1"
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
   }
 }
