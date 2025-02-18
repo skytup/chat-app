@@ -1,6 +1,7 @@
 const express = require('express');
 const { Server } = require('socket.io');
 const path = require('path');
+const qs = require('querystring');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -51,7 +52,7 @@ io.on('connection', (socket) => {
                 id: Date.now(),
                 username: user.username,
                 avatar: user.avatar,
-                message: message,
+                message: qs.escape(message),
                 time: new Date().toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
