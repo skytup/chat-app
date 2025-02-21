@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin: 10px 0px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 10px 0px;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .form-group input, .form-group button {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label for="create-room-name">Create Room</label>
+            <input type="text" id="create-room-name" placeholder="Enter room name">
+            <button id="create-room-btn">Create Room</button>
+        </div>
+        <div class="form-group">
+            <label for="join-room-name">Join Room</label>
+            <input type="text" id="join-room-name" placeholder="Enter room id">
+            <button id="join-room-btn">Join Room</button>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('create-room-btn').addEventListener('click', async () => {
+            const roomName = document.getElementById('create-room-name').value;
+            if (roomName) {
+                try {
+                    const response = await fetch('/create-room', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ room_name: roomName })
+                    });
+                    const data = await response.json();
+                    if (data.id) {
+                        alert(`Room created with ID: ${data.id}`);
+                        socket.emit('room_id', data.id);
+                    } else {
+                        alert('Error creating room');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error creating room');
+                }
+            } else {
+                alert('Please enter a room name');
+            }
+        });
+
+        document.getElementById('join-room-btn').addEventListener('click', () => {
+            const roomId = document.getElementById('join-room-name').value;
+            if (roomId) {
+                socket.emit('join_room', roomId);
+            } else {
+                alert('Please enter a room ID');
+            }
+        });
+    </script>
+</body>
+</html>

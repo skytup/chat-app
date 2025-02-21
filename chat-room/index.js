@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
 
+
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -84,7 +85,10 @@ io.on('connection', (socket) => {
 
 // Update socket.io client connection URL in index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+app.get('/room', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/room.html'));
 });
 
 const PORT = process.env.PORT || 3000;
